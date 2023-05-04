@@ -12,13 +12,3 @@ void semaphore_acquire(volatile int* count) {
 void semaphore_release(int *count) {
 	__sync_fetch_and_sub(count, 1); // V
 }
-
-int count = 0; // 공유 변수
-
-void semaphore_func() {
-	for (;;) {
-		semaphore_acquire(&count);
-		// 임계 영역
-		semaphore_release(&count);
-	}
-}
