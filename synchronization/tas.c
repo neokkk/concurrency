@@ -2,9 +2,9 @@
 
 // not atomic
 bool _test_and_set(bool* lock) {
-  if (*lock) return true;
+  bool old_value = *lock;
   *lock = true;
-  return false;
+  return old_value;
 }
 
 bool test_and_set(bool* lock) {

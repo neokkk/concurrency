@@ -2,7 +2,7 @@
 #include <tas.c>
 
 void _spinlock_acquire(bool* lock) { // 개선 전
-  while (test_and_set(&lock));
+  while (test_and_set(lock));
 }
 
 void spinlock_acquire(volatile bool* lock) { // 개선 후(TTAS)
