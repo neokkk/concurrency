@@ -3,7 +3,7 @@
 
 pthread_mutex_t mut = PTHREAD_MUTEX_INITIALIZER;
 
-void* thread_func(void* argv) {
+void* worker(void *arg) {
 	if (pthread_mutex_lock(&mut) != 0) {
 		perror("pthread_mutex_lock error");
 		exit(-1);
@@ -22,12 +22,12 @@ void* thread_func(void* argv) {
 int main() {
 	pthread_t t1, t2;
 
-	if (pthread_create(&t1, NULL, thread_func, NULL) != 0) {
+	if (pthread_create(&t1, NULL, worker, NULL) != 0) {
 		perror("t1 pthread_create error");
 		return -1;
 	}
 	
-	if (pthread_create(&t2, NULL, thread_func, NULL) != 0) {
+	if (pthread_create(&t2, NULL, worker, NULL) != 0) {
 		perror("p2 pthread_create error");
 		return -1;
 	}

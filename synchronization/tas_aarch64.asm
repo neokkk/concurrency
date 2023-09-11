@@ -1,7 +1,7 @@
 	.arch armv8-a
 	.file	"tas.c"
 	.text
-	.global	__aarch64_swp1_acq
+	.global	__aarch64_swp1_sync
 	.align	2
 	.global	test_and_set
 	.type	test_and_set, %function
@@ -16,7 +16,7 @@ test_and_set:
 	str	x0, [sp, 24]
 	ldr	x1, [sp, 24]
 	mov	w0, 1
-	bl	__aarch64_swp1_acq
+	bl	__aarch64_swp1_sync
 	and	w0, w0, 255
 	cmp	w0, 0
 	cset	w0, ne
@@ -29,5 +29,5 @@ test_and_set:
 	.cfi_endproc
 .LFE0:
 	.size	test_and_set, .-test_and_set
-	.ident	"GCC: (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0"
+	.ident	"GCC: (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0"
 	.section	.note.GNU-stack,"",@progbits

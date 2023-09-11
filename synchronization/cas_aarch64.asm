@@ -1,11 +1,11 @@
 	.arch armv8-a
 	.file	"cas.c"
 	.text
-	.global	__aarch64_cas8_acq_rel
+	.global	__aarch64_cas8_sync
 	.align	2
-	.global	_compare_and_swap
-	.type	_compare_and_swap, %function
-_compare_and_swap:
+	.global	compare_and_swap
+	.type	compare_and_swap, %function
+compare_and_swap:
 .LFB0:
 	.cfi_startproc
 	stp	x29, x30, [sp, -64]!
@@ -24,7 +24,7 @@ _compare_and_swap:
 	mov	x2, x1
 	mov	x1, x0
 	mov	x0, x19
-	bl	__aarch64_cas8_acq_rel
+	bl	__aarch64_cas8_sync
 	cmp	x0, x19
 	cset	w0, eq
 	ldr	x19, [sp, 16]
@@ -36,6 +36,6 @@ _compare_and_swap:
 	ret
 	.cfi_endproc
 .LFE0:
-	.size	_compare_and_swap, .-_compare_and_swap
-	.ident	"GCC: (Ubuntu 11.3.0-1ubuntu1~22.04) 11.3.0"
+	.size	compare_and_swap, .-compare_and_swap
+	.ident	"GCC: (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0"
 	.section	.note.GNU-stack,"",@progbits

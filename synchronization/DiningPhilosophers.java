@@ -16,15 +16,15 @@ public class DiningPhilosophers extends Thread {
 
     void putdown(int i) {
         state[i] = State.THINKING;
-        test((i + 4) % 5);
-        test((i + 1) % 5);
+        test((i + 4) % NUM_PHILOSOPHERS);
+        test((i + 1) % NUM_PHILOSOPHERS);
     }
 
     void test(int i) {
         if (
-            (state[(i + 4) % 5] != State.EATING) &&
+            (state[(i + 4) % NUM_PHILOSOPHERS] != State.EATING) &&
             (state[i] == State.HUNGRY) &&
-            (state[(i + 1) % 5] != State.EATING)
+            (state[(i + 1) % NUM_PHILOSOPHERS] != State.EATING)
         ) {
             state[i] = State.EATING;
             self[i].signal();
@@ -32,7 +32,7 @@ public class DiningPhilosophers extends Thread {
     }
 
     void initialize() {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < NUM_PHILOSOPHERS; i++) {
             state[i] = State.THINKING;
         }
     }
