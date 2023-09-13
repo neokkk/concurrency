@@ -12,7 +12,7 @@ typedef struct {
 } item_t;
 
 item_t ring_buffer[BUF_SIZE];
-int in = 0, out = 0, count = 0;
+volatile int head = 0, tail = 0, count = 0;
 
 /*
 ** 버퍼 크기 - 1 만큼만 아이템을 채울 수 있다.
@@ -27,10 +27,10 @@ void *produce(void *arg)
     next_produced.value = rand() % 10;
     printf("producer: %s\n", next_produced.message);
   
-    while ((in + 1) % BUF_SIZE == out); // 버퍼가 가득 차있으면 더이상 생산할 수 없다.
+    while ((head + 1) % BUF_SIZE == tail); // 버퍼가 가득 차있으면 더이상 생산할 수 없다.
 
-    ring_buffer[in] = next_produced;
-    in = (in + 1) % BUF_SIZE;
+    ring_buffer[head] = next_produced;
+    head = (head + 1) % BUF_SIZE;
     count++;
   }
 
@@ -42,11 +42,11 @@ void *consume(void *arg)
   item_t next_consumed;
 
   while (1) {
-    while (in == out); // 버퍼가 비어있으면 더이상 소비할 수 없다.
+    while (head == tail); // 버퍼가 비어있으면 더이상 소비할 수 없다.
 
     // 아이템 소비
-    next_consumed = ring_buffer[out];
-    out = (out + 1) % BUF_SIZE;
+    next_consumed = ring_buffer[tail];
+    tail = (tail + 1) % BUF_SIZE;
     count--;
 
     printf("consumer: %s\n", next_consumed.message);

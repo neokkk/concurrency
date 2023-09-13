@@ -12,7 +12,7 @@ typedef struct {
 } item_t;
 
 item_t ring_buffer[BUF_SIZE];
-int in = 0, out = 0, count = 0;
+volatile int head = 0, tail = 0, count = 0;
 
 /*
 ** 버퍼 크기만큼 채울 수 있지만
@@ -30,8 +30,8 @@ void *produce(void *arg)
   
     while (count == BUF_SIZE);
 
-    ring_buffer[in] = next_produced;
-    in = (in + 1) % BUF_SIZE;
+    ring_buffer[head] = next_produced;
+    head = (head + 1) % BUF_SIZE;
     count++;
   }
 
@@ -45,8 +45,8 @@ void *consume(void *arg)
   while (1) {
     while (count == BUF_SIZE);
 
-    next_consumed = ring_buffer[out];
-    out = (out + 1) % BUF_SIZE;
+    next_consumed = ring_buffer[tail];
+    tail = (tail + 1) % BUF_SIZE;
     count--;
 
     // 아이템 소비

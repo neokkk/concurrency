@@ -24,6 +24,6 @@ void reentlock_release(struct reentlock *lock)
 
   if (lock->count == 0) {
     lock->id = 0;
-    spinlock_release(lock);
+    spinlock_release(&lock->lock);
   }
 }
